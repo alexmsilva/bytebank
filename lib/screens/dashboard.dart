@@ -1,4 +1,5 @@
 import 'package:bytebank/screens/contact/list.dart';
+import 'package:bytebank/screens/transaction/list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -29,7 +30,7 @@ class Dashboard extends StatelessWidget {
                 _FeatureItem(
                   'Extrato',
                   Icons.description,
-                  onTap: () => print("Clicou em extrato..."),
+                  onTap: () => _showTransactionsList(context),
                 ),
               ],
             ),
@@ -46,6 +47,14 @@ class Dashboard extends StatelessWidget {
       ),
     );
   }
+
+  void _showTransactionsList(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => TransactionList(),
+      ),
+    );
+  }
 }
 
 class _FeatureItem extends StatelessWidget {
@@ -57,7 +66,8 @@ class _FeatureItem extends StatelessWidget {
     this.name,
     this.icon, {
     @required this.onTap,
-  });
+  })  : assert(icon != null),
+        assert(onTap != null);
 
   @override
   Widget build(BuildContext context) {
