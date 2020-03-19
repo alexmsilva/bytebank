@@ -8,46 +8,85 @@ class Dashboard extends StatelessWidget {
       appBar: AppBar(
         title: Text('Dashboard'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Image.asset('images/bytebank_logo.png'),
-            Material(
-              color: Theme.of(context).primaryColor,
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ContactList(),
-                    ),
-                  );
-                },
-                child: Container(
-                  width: 150.0,
-                  height: 100.0,
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Icon(
-                        Icons.people,
-                        color: Colors.white,
-                        size: 32.0,
-                      ),
-                      Text(
-                        'Contatos',
-                        style: TextStyle(color: Colors.white, fontSize: 16.0),
-                      ),
-                    ],
-                  ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('images/bytebank_logo.png'),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _FeatureItem(
+                  'Transferência',
+                  Icons.monetization_on,
+                  onTap: () => _showContactList(context),
                 ),
-              ),
+                _FeatureItem(
+                  'Extrato',
+                  Icons.description,
+                  onTap: () => print("Clicou em extrato..."),
+                ),
+              ],
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showContactList(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ContactList(),
+      ),
+    );
+  }
+}
+
+class _FeatureItem extends StatelessWidget {
+  final String name;
+  final IconData icon;
+  final Function onTap;
+
+  _FeatureItem(
+    this.name,
+    this.icon, {
+    @required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Material(
+        color: Theme.of(context).primaryColor,
+        child: InkWell(
+          onTap: () => onTap(),
+          child: Container(
+            width: 130.0,
+            height: 100.0,
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Icon(
+                  icon,
+                  color: Colors.white,
+                  size: 32.0,
+                ),
+                Text(
+                  name,
+                  style: TextStyle(color: Colors.white, fontSize: 16.0),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
