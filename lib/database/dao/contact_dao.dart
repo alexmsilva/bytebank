@@ -31,8 +31,6 @@ class ContactDao {
     final List<Map<String, dynamic>> result = await db.query('contacts');
     List<Contact> contacts = _toList(result);
 
-    await Future.delayed(Duration(seconds: 1));
-
     return contacts;
   }
 
