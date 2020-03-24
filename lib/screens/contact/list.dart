@@ -1,5 +1,5 @@
 import 'package:bytebank/components/centered_message.dart';
-import 'package:bytebank/components/loading.dart';
+import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/database/dao/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contact/form.dart';
@@ -28,7 +28,7 @@ class _ContactListState extends State<ContactList> {
             case ConnectionState.none:
               break;
             case ConnectionState.waiting:
-              return Loading();
+              return Progress();
             case ConnectionState.active:
               break;
             case ConnectionState.done:

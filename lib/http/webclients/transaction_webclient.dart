@@ -32,6 +32,7 @@ class TransactionWebClient {
   static final Map<int, String> _statusCodeResponses = {
     400: 'Ocorreu um erro ao realizar a transferência',
     401: 'Falha de autenticação',
+    409: 'Transferência já realizada',
   };
 }
 
