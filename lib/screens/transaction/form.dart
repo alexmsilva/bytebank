@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:bytebank/components/response_dialog.dart';
+import 'package:bytebank/components/transaction_authentication_dialog.dart';
 import 'package:bytebank/http/webclients/transaction_webclient.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
@@ -63,11 +67,16 @@ class _TransactionFormState extends State<TransactionForm> {
                     onPressed: () {
                       final value = double.tryParse(_amountController.text);
                       final trasaction = Transaction(value, widget.contact);
-                      _webClient.save(trasaction).then((t) {
-                        if (t != null) {
-                          Navigator.pop(context);
-                        }
-                      });
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return TransactionAuthDialog(
+                            onConfirm: (String password) {
+                              _save(trasaction, password, context);
+                            },
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -76,6 +85,43 @@ class _TransactionFormState extends State<TransactionForm> {
           ),
         ),
       ),
+    );
+  }
+
+  void _save(Transaction trasaction, String password, BuildContext context) {
+    _webClient
+        .save(trasaction, password)
+        .then((createdTransaction) {
+          if (createdTransaction != null) {
+            showDialog(
+                context: context,
+                builder: (_) {
+                  return SuccessDialog('Transferência realizada');
+                }).then((value) => Navigator.pop(context));
+          }
+        })
+        .catchError(
+          (error) => _showFailureMessage(
+            context,
+            message: 'A transferência demorou muito e não foi salva',
+          ),
+          test: (error) => error is TimeoutException,
+        )
+        .catchError(
+          (error) => _showFailureMessage(context, message: error),
+          test: (error) => error is HttpException,
+        )
+        .catchError((error) => _showFailureMessage(context),
+            test: (error) => error is Exception);
+  }
+
+  void _showFailureMessage(
+    BuildContext context, {
+    String message = 'Erro desconhecido',
+  }) {
+    showDialog(
+      context: context,
+      builder: (_) => FailureDialog(message),
     );
   }
 }
