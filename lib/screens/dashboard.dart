@@ -9,33 +9,40 @@ class Dashboard extends StatelessWidget {
       appBar: AppBar(
         title: Text('Dashboard'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('images/bytebank_logo.png'),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _FeatureItem(
-                  'Transferência',
-                  Icons.monetization_on,
-                  onTap: () => _showContactList(context),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset('images/bytebank_logo.png'),
                 ),
-                _FeatureItem(
-                  'Extrato',
-                  Icons.description,
-                  onTap: () => _showTransactionsList(context),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      FeatureItem(
+                        'Transferência',
+                        Icons.monetization_on,
+                        onTap: () => _showContactList(context),
+                      ),
+                      FeatureItem(
+                        'Extrato',
+                        Icons.description,
+                        onTap: () => _showTransactionsList(context),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -57,12 +64,12 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-class _FeatureItem extends StatelessWidget {
+class FeatureItem extends StatelessWidget {
   final String name;
   final IconData icon;
   final Function onTap;
 
-  _FeatureItem(
+  FeatureItem(
     this.name,
     this.icon, {
     @required this.onTap,
