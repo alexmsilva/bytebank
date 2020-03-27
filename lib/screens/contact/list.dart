@@ -35,7 +35,7 @@ class _ContactListState extends State<ContactList> {
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final Contact contact = contacts[index];
-                  return _ContactItem(
+                  return ContactItem(
                     contact,
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -66,11 +66,11 @@ class _ContactListState extends State<ContactList> {
   }
 }
 
-class _ContactItem extends StatelessWidget {
+class ContactItem extends StatelessWidget {
   final Contact contact;
   final Function onTap;
 
-  const _ContactItem(
+  const ContactItem(
     this.contact, {
     @required this.onTap,
   });

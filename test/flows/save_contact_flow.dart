@@ -9,12 +9,14 @@ import 'package:mockito/mockito.dart';
 
 import '../matchers/matchers.dart';
 import '../mocks/mocks.dart';
+import 'actions.dart';
 
 void main() {
   testWidgets('Should save a contact', (tester) async {
     final mockContactDao = MockContactDao();
     await tester.pumpWidget(BytebankApp(
       contactDao: mockContactDao,
+      transactionWebClient: null,
     ));
 
     final dashboard = find.byType(Dashboard);
@@ -69,17 +71,4 @@ void main() {
 
     verify(mockContactDao.findAll());
   });
-}
-
-Future<void> clickOnTheTransferFeatureItem(WidgetTester tester) async {
-  final transferFeatureItem = find.byWidgetPredicate(
-    (widget) => featureItemMatcher(
-      widget,
-      'Transferência',
-      Icons.monetization_on,
-    ),
-  );
-
-  expect(transferFeatureItem, findsOneWidget);
-  return tester.tap(transferFeatureItem);
 }
