@@ -1,9 +1,9 @@
 import 'package:bytebank/components/centered_message.dart';
 import 'package:bytebank/components/progress.dart';
-import 'package:bytebank/database/dao/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contact/form.dart';
 import 'package:bytebank/screens/transaction/form.dart';
+import 'package:bytebank/widgets/app_dependencies.dart';
 import 'package:flutter/material.dart';
 
 class ContactList extends StatefulWidget {
@@ -12,17 +12,16 @@ class ContactList extends StatefulWidget {
 }
 
 class _ContactListState extends State<ContactList> {
-  final _dao = ContactDao();
-
   @override
   Widget build(BuildContext context) {
+    final dependencies = AppDependencies.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Contatos'),
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: List(),
-        future: _dao.findAll(),
+        future: dependencies.contactDao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
